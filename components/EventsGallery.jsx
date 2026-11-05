@@ -38,7 +38,7 @@ function EventMedia({ heading, category, media = [] }) {
       {current.isEmbed ? (
         <iframe src={current.url} title={heading} className="h-full w-full" allowFullScreen />
       ) : (
-        <Image src={current.url} alt={heading} fill className="object-cover" />
+        <Image src={current.url} alt={heading} fill sizes="340px" className="object-cover" />
       )}
       {items.length > 1 && (
         <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
@@ -65,24 +65,24 @@ export default function EventsGallery({ events = [] }) {
   return (
     <section id="activities" className="bg-ivory">
       <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
-        <p className="font-display text-sm italic text-brass-600">School life</p>
-        <h2 className="mt-1 font-display text-3xl text-navy sm:text-4xl">Activities &amp; Events</h2>
+        <h2 className="font-display text-3xl font-semibold text-navy sm:text-4xl">Activities &amp; Events</h2>
+        <p className="mt-2 text-navy-600">School ki hali gatividhiyan, ek nazar me.</p>
 
-        <div className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+        <div className="-mx-5 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4">
           {list.map((ev, idx) => {
             return (
               <article
                 key={ev._id || idx}
-                className="w-[280px] shrink-0 snap-start rounded-sm border border-navy-100 bg-white sm:w-[340px]"
+                className="w-[82vw] max-w-[340px] shrink-0 snap-start overflow-hidden rounded-3xl border border-navy-100 bg-white"
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-navy-50">
                   <EventMedia heading={ev.heading} category={ev.category} media={ev.media} />
                 </div>
                 <div className="p-4">
-                  <p className="text-[11px] uppercase tracking-wide text-brass-600">
+                  <p className="text-xs font-semibold text-brass-600">
                     {formatDate(ev.eventDate)}
                   </p>
-                  <h3 className="mt-1 font-display text-lg text-navy">{ev.heading}</h3>
+                  <h3 className="mt-1 font-display text-lg font-semibold text-navy">{ev.heading}</h3>
                   <p className="mt-1.5 line-clamp-3 text-sm text-navy-600">{ev.description}</p>
                 </div>
               </article>
@@ -104,14 +104,14 @@ const PLACEHOLDER_EVENTS = [
   },
   {
     heading: "Science Exhibition",
-    description: "Student-built working models on show for parents, from Class 6 through Class 10.",
+    description: "Student-built working models on show for parents, from Class 1 through Class 8.",
     eventDate: new Date(),
     category: "academic",
     media: [],
   },
   {
     heading: "Founders' Day",
-    description: "A cultural evening marking another year since the school's founding in 1987.",
+    description: "A cultural evening of songs, dance and skits by our students.",
     eventDate: new Date(),
     category: "celebration",
     media: [],

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const CLASS_OPTIONS = [
   "Nursery", "LKG", "UKG",
   "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
-  "Class 6", "Class 7", "Class 8", "Class 9",
+  "Class 6", "Class 7", "Class 8",
 ];
 
 const initialForm = {
@@ -64,7 +64,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
         onClick={() => setOpen(true)}
         className={
           triggerClassName ||
-          "inline-flex items-center gap-2 rounded-sm bg-brass px-6 py-3 text-sm font-medium text-navy-900 transition-colors hover:bg-brass-400"
+          "inline-flex items-center gap-2 rounded-full bg-brass px-6 py-3 text-sm font-bold text-navy transition-colors hover:bg-brass-400"
         }
       >
         {triggerLabel}
@@ -72,13 +72,13 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-navy-900/60 px-4 py-8"
+          className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-navy-900/60 sm:items-center sm:px-4 sm:py-8"
           role="dialog"
           aria-modal="true"
           aria-labelledby="inquiry-modal-title"
           onClick={(e) => e.target === e.currentTarget && closeAndReset()}
         >
-          <div className="relative w-full max-w-md rounded-sm bg-ivory shadow-plaque">
+          <div className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl">
             <div className="flex items-center justify-between border-b border-navy-100 px-6 py-4">
               <h2 id="inquiry-modal-title" className="font-display text-xl text-navy">
                 Admission Inquiry
@@ -104,7 +104,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                 <button
                   type="button"
                   onClick={closeAndReset}
-                  className="mt-6 rounded-sm bg-navy px-5 py-2 text-sm text-ivory transition-colors hover:bg-navy-600"
+                  className="mt-6 rounded-xl bg-navy px-5 py-2 text-sm text-ivory transition-colors hover:bg-navy-600"
                 >
                   Done
                 </button>
@@ -120,7 +120,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                     required
                     value={form.classAppliedFor}
                     onChange={(e) => setForm({ ...form, classAppliedFor: e.target.value })}
-                    className="w-full rounded-sm border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
+                    className="w-full rounded-xl border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
                   >
                     <option value="" disabled>
                       Choose a class
@@ -142,7 +142,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                     required
                     value={form.studentOrParentName}
                     onChange={(e) => setForm({ ...form, studentOrParentName: e.target.value })}
-                    className="w-full rounded-sm border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
+                    className="w-full rounded-xl border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
                     placeholder="e.g. Anjali Sharma"
                   />
                 </div>
@@ -159,7 +159,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                     title="Enter a 10-digit mobile number"
                     value={form.mobileNumber}
                     onChange={(e) => setForm({ ...form, mobileNumber: e.target.value.replace(/\D/g, "").slice(0, 10) })}
-                    className="w-full rounded-sm border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
+                    className="w-full rounded-xl border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
                     placeholder="10-digit mobile number"
                   />
                 </div>
@@ -173,7 +173,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                     required
                     value={form.area}
                     onChange={(e) => setForm({ ...form, area: e.target.value })}
-                    className="w-full rounded-sm border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
+                    className="w-full rounded-xl border border-navy-100 bg-white px-3 py-2 text-sm text-ink focus:border-brass"
                     placeholder="e.g. Sigra, Varanasi"
                   />
                 </div>
@@ -187,7 +187,7 @@ export default function AdmissionInquiryModal({ triggerClassName, triggerLabel =
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full rounded-sm bg-brass px-5 py-2.5 text-sm font-medium text-navy-900 transition-colors hover:bg-brass-400 disabled:opacity-60"
+                  className="w-full rounded-xl bg-brass px-5 py-2.5 text-sm font-medium text-navy-900 transition-colors hover:bg-brass-400 disabled:opacity-60"
                 >
                   {status === "submitting" ? "Submitting..." : "Submit Inquiry"}
                 </button>

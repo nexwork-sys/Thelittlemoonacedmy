@@ -148,7 +148,7 @@ export default function FaceCheckIn() {
   }
 
   return (
-    <div className="max-w-md rounded-sm border border-navy-100 bg-white p-5">
+    <div className="max-w-md rounded-xl border border-navy-100 bg-white p-5">
       <h2 className="font-display text-lg text-navy">Face Punch In / Out</h2>
       <p className="mt-1 text-sm text-navy-600">
         Punch In verifies your face and location. Punch Out only checks that you're on the
@@ -162,7 +162,7 @@ export default function FaceCheckIn() {
         </div>
       )}
 
-      <div className="mt-4 overflow-hidden rounded-sm bg-navy-900">
+      <div className="mt-4 overflow-hidden rounded-xl bg-navy-900">
         <video
           ref={videoRef}
           autoPlay
@@ -185,7 +185,7 @@ export default function FaceCheckIn() {
           type="button"
           onClick={() => punch("check-in")}
           disabled={busy}
-          className="flex-1 rounded-sm bg-navy px-4 py-2.5 text-sm text-white hover:bg-navy-600 disabled:opacity-50"
+          className="flex-1 rounded-xl bg-navy px-4 py-2.5 text-sm text-white hover:bg-navy-600 disabled:opacity-50"
         >
           {busy ? "Verifying…" : "Punch In"}
         </button>
@@ -193,7 +193,7 @@ export default function FaceCheckIn() {
           type="button"
           onClick={() => punch("check-out")}
           disabled={busy}
-          className="flex-1 rounded-sm bg-brass px-4 py-2.5 text-sm font-medium text-navy hover:bg-brass-600 disabled:opacity-50"
+          className="flex-1 rounded-xl bg-brass px-4 py-2.5 text-sm font-medium text-navy hover:bg-brass-600 disabled:opacity-50"
         >
           {busy ? "Checking location…" : "Punch Out"}
         </button>

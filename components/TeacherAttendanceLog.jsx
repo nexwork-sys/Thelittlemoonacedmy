@@ -39,22 +39,22 @@ export default function TeacherAttendanceLog() {
         <div className="flex flex-wrap items-center gap-2">
           <label className="text-sm text-navy-600">Month</label>
           <input type="month" value={month} onChange={(e) => setMonth(e.target.value)}
-            className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm" />
+            className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm" />
           <input
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search teacher name or ID…"
-            className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+            className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
           />
         </div>
         <a href={`/api/teacher-attendance/export?month=${month}`}
-          className="rounded-sm bg-navy px-4 py-2 text-sm text-ivory hover:bg-navy-600">
+          className="rounded-xl bg-navy px-4 py-2 text-sm text-ivory hover:bg-navy-600">
           Download Attendance (Excel)
         </a>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-sm border border-navy-100 bg-white">
+      <div className="mt-4 overflow-x-auto rounded-xl border border-navy-100 bg-white">
         <table className="w-full min-w-[640px] text-sm">
           <thead>
             <tr className="border-b border-navy-100 text-left text-xs uppercase tracking-wide text-navy-400">

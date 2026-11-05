@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const CLASS_OPTIONS = [
   "Nursery", "LKG", "UKG",
   "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
-  "Class 6", "Class 7", "Class 8", "Class 9",
+  "Class 6", "Class 7", "Class 8",
 ];
 
 function todayISO() {
@@ -59,7 +59,7 @@ export default function StudentOverview() {
       <div className="flex flex-wrap items-center gap-3">
         <label className="text-sm text-navy-600">Class</label>
         <select value={className} onChange={(e) => setClassName(e.target.value)}
-          className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm">
+          className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm">
           {CLASS_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
 
@@ -69,7 +69,7 @@ export default function StudentOverview() {
           value={selectedDate}
           max={todayISO()}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+          className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
         />
         {!isToday && (
           <button
@@ -85,7 +85,7 @@ export default function StudentOverview() {
         </span>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-sm border border-navy-100 bg-white">
+      <div className="mt-4 overflow-x-auto rounded-xl border border-navy-100 bg-white">
         <table className="w-full min-w-[620px] text-sm">
           <thead>
             <tr className="border-b border-navy-100 text-left text-xs uppercase tracking-wide text-navy-400">
@@ -110,11 +110,11 @@ export default function StudentOverview() {
                   <td className="px-4 py-3">{s.name}</td>
                   <td className="px-4 py-3">{s.section}</td>
                   <td className="px-4 py-3">
-                    {!status && <span className="rounded-sm bg-navy-50 px-2 py-0.5 text-xs text-navy-400">Not marked</span>}
-                    {status === "present" && <span className="rounded-sm bg-sage/10 px-2 py-0.5 text-xs text-sage">Present</span>}
-                    {status === "absent" && <span className="rounded-sm bg-maroon/10 px-2 py-0.5 text-xs text-maroon">Absent</span>}
+                    {!status && <span className="rounded-xl bg-navy-50 px-2 py-0.5 text-xs text-navy-400">Not marked</span>}
+                    {status === "present" && <span className="rounded-xl bg-sage/10 px-2 py-0.5 text-xs text-sage">Present</span>}
+                    {status === "absent" && <span className="rounded-xl bg-maroon/10 px-2 py-0.5 text-xs text-maroon">Absent</span>}
                     {status && !["present", "absent"].includes(status) && (
-                      <span className="rounded-sm bg-brass/10 px-2 py-0.5 text-xs text-brass-600 capitalize">{status}</span>
+                      <span className="rounded-xl bg-brass/10 px-2 py-0.5 text-xs text-brass-600 capitalize">{status}</span>
                     )}
                   </td>
                 </tr>

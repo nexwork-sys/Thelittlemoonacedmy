@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from "react";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/#about" },
+  { label: "About", href: "/#about" },
   { label: "Toppers", href: "/#toppers" },
-  { label: "Activities & Events", href: "/#activities" },
-  { label: "Contact Us", href: "/#contact" },
+  { label: "Activities", href: "/#activities" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 function ErpMenu() {
@@ -18,29 +18,28 @@ function ErpMenu() {
   useEffect(() => {
     const close = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
     document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
+    document.addEventListener("touchstart", close);
+    return () => { document.removeEventListener("mousedown", close); document.removeEventListener("touchstart", close); };
   }, []);
 
-  const item = "flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800/60 p-3 text-white transition hover:bg-slate-700/80";
+  const item = "flex items-center gap-3 rounded-2xl p-3 transition hover:bg-navy-50";
   return (
     <div className="relative" ref={ref}>
       <button type="button" onClick={() => setOpen((v) => !v)} aria-haspopup="menu" aria-expanded={open}
-        className="flex items-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 font-bold text-navy shadow-sm ring-2 ring-amber-300 transition hover:bg-amber-500">
-        <span aria-hidden>👤</span><span className="tracking-wide">ERP LOGIN</span>
-        <span aria-hidden className={`text-xs transition-transform ${open ? "rotate-180" : ""}`}>▼</span>
+        className="flex items-center gap-2 rounded-full bg-navy px-4 py-2.5 text-sm font-semibold text-white shadow-soft transition hover:bg-navy-700">
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" strokeLinecap="round" /></svg>
+        <span>ERP Login</span>
       </button>
       {open && (
-        <div role="menu" className="absolute right-0 z-50 mt-2 w-72 rounded-xl border-2 border-amber-400/80 bg-navy-900 p-3 shadow-2xl">
-          <p className="mb-1 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Select Portal Access</p>
-          <Link href="/login?type=student" role="menuitem" onClick={() => setOpen(false)} className={`${item} mb-2 hover:border-amber-400/50`}>
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-amber-400/20 text-lg">🎓</span>
-            <span><span className="block text-sm font-bold">Student Login</span><span className="block text-[11px] text-gray-400">Fees, Attendance, Results & Admit Card</span></span>
+        <div role="menu" className="absolute right-0 z-50 mt-3 w-[min(19rem,calc(100vw-2rem))] rounded-3xl border border-navy-100 bg-white p-2 shadow-2xl">
+          <Link href="/login?type=student" role="menuitem" onClick={() => setOpen(false)} className={item}>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-brass/30 text-lg" aria-hidden>🎓</span>
+            <span><span className="block text-sm font-bold text-navy">Student Login</span><span className="block text-xs text-navy-400">Fees, attendance, results, admit card</span></span>
           </Link>
-          <Link href="/login?type=staff" role="menuitem" onClick={() => setOpen(false)} className={`${item} hover:border-cyan-400/50`}>
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-cyan-400/20 text-lg">🛠️</span>
-            <span><span className="block text-sm font-bold">Admin / Teacher Login</span><span className="block text-[11px] text-gray-400">Sirf 5-digit PIN se login</span></span>
+          <Link href="/login?type=staff" role="menuitem" onClick={() => setOpen(false)} className={item}>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-sky/40 text-lg" aria-hidden>🛠️</span>
+            <span><span className="block text-sm font-bold text-navy">Admin / Teacher Login</span><span className="block text-xs text-navy-400">Sirf 5-digit PIN se login</span></span>
           </Link>
-          <p className="mt-2 border-t border-slate-800 pt-2 text-center text-[10px] text-gray-400">🔒 Secure portal</p>
         </div>
       )}
     </div>
@@ -51,32 +50,31 @@ export default function Header() {
   const [menu, setMenu] = useState(false);
   return (
     <>
-      <div className="bg-navy px-4 py-1.5 text-xs text-gray-300">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <span>📢 Admissions Open for Session 2026-27</span>
-          <span className="hidden md:inline">Nursery to Class IX · Basani Bazar, Babatpur, Varanasi</span>
-        </div>
+      <div className="bg-navy-900 px-4 py-2 text-center text-xs text-white/80 sm:text-sm">
+        <span className="font-semibold text-brass">Admissions open</span> for session 2026–27 · Nursery to Class VIII
       </div>
-      <header className="sticky top-0 z-40 bg-white shadow-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="The Little Moon Academy logo" width={52} height={52} priority className="rounded-full" />
-            <span className="leading-tight">
-              <span className="block font-display text-lg font-bold text-navy md:text-xl">THE LITTLE MOON ACADEMY</span>
-              <span className="block text-[11px] tracking-wider text-gray-500">AN IDEAL SCHOOL FOR YOUR KIDS</span>
+      <header className="sticky top-0 z-40 border-b border-navy-100/70 bg-white/85 backdrop-blur-lg">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5">
+          <Link href="/" className="flex min-w-0 items-center gap-2.5">
+            <Image src="/logo.png" alt="The Little Moon Academy logo" width={44} height={44} priority className="h-11 w-11 shrink-0 rounded-full" />
+            <span className="min-w-0 leading-tight">
+              <span className="block truncate font-display text-base font-bold text-navy sm:text-xl">The Little Moon Academy</span>
+              <span className="hidden text-[11px] text-navy-400 sm:block">An ideal school for your kids</span>
             </span>
           </Link>
-          <nav className="hidden items-center gap-6 text-sm font-medium text-gray-700 lg:flex">
-            {NAV_LINKS.map((l) => <a key={l.href} href={l.href} className="transition-colors hover:text-brass-600">{l.label}</a>)}
+          <nav className="hidden items-center gap-1 text-sm font-medium text-navy-600 lg:flex">
+            {NAV_LINKS.map((l) => <a key={l.href} href={l.href} className="rounded-full px-3.5 py-2 transition hover:bg-navy-50 hover:text-navy">{l.label}</a>)}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <ErpMenu />
-            <button className="rounded-lg border border-navy-100 px-3 py-2 lg:hidden" aria-label="Menu" onClick={() => setMenu((v) => !v)}>☰</button>
+            <button className="grid h-10 w-10 place-items-center rounded-full border border-navy-100 text-navy lg:hidden" aria-label="Menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">{menu ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+            </button>
           </div>
         </div>
         {menu && (
-          <nav className="border-t border-navy-100 bg-white px-4 py-2 lg:hidden">
-            {NAV_LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setMenu(false)} className="block py-2 text-sm text-gray-700">{l.label}</a>)}
+          <nav className="border-t border-navy-100 bg-white px-4 pb-3 pt-1 lg:hidden">
+            {NAV_LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setMenu(false)} className="block rounded-xl px-3 py-3 text-sm font-medium text-navy-600 active:bg-navy-50">{l.label}</a>)}
           </nav>
         )}
       </header>

@@ -92,20 +92,20 @@ export default function EventManager({ canDelete = true }) {
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
-      <form onSubmit={handleSubmit} className="space-y-3 rounded-sm border border-navy-100 bg-white p-5">
+      <form onSubmit={handleSubmit} className="space-y-3 rounded-xl border border-navy-100 bg-white p-5">
         <h2 className="font-display text-lg text-navy">Add an event</h2>
         <input required placeholder="Heading" value={form.heading}
           onChange={(e) => setForm({ ...form, heading: e.target.value })}
-          className="w-full rounded-sm border border-navy-100 px-3 py-2 text-sm" />
+          className="w-full rounded-xl border border-navy-100 px-3 py-2 text-sm" />
         <textarea required placeholder="Description" rows={3} value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="w-full rounded-sm border border-navy-100 px-3 py-2 text-sm" />
+          className="w-full rounded-xl border border-navy-100 px-3 py-2 text-sm" />
         <div className="flex gap-3">
           <input required type="date" value={form.eventDate}
             onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
-            className="w-1/2 rounded-sm border border-navy-100 px-3 py-2 text-sm" />
+            className="w-1/2 rounded-xl border border-navy-100 px-3 py-2 text-sm" />
           <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-1/2 rounded-sm border border-navy-100 px-3 py-2 text-sm">
+            className="w-1/2 rounded-xl border border-navy-100 px-3 py-2 text-sm">
             {["sports", "cultural", "academic", "excursion", "celebration", "other"].map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -122,10 +122,10 @@ export default function EventManager({ canDelete = true }) {
         </div>
         <input placeholder="Or paste a video embed URL (YouTube, etc.)" value={form.embedUrl}
           onChange={(e) => setForm({ ...form, embedUrl: e.target.value })}
-          className="w-full rounded-sm border border-navy-100 px-3 py-2 text-sm" />
+          className="w-full rounded-xl border border-navy-100 px-3 py-2 text-sm" />
         {error && <p className="text-sm text-maroon">{error}</p>}
         <button type="submit" disabled={saving}
-          className="w-full rounded-sm bg-navy px-5 py-2 text-sm text-ivory hover:bg-navy-600 disabled:opacity-50">
+          className="w-full rounded-xl bg-navy px-5 py-2 text-sm text-ivory hover:bg-navy-600 disabled:opacity-50">
           {saving ? "Saving..." : "Publish event"}
         </button>
       </form>
@@ -134,7 +134,7 @@ export default function EventManager({ canDelete = true }) {
         <h2 className="font-display text-lg text-navy">Published events</h2>
         <ul className="mt-3 space-y-2">
           {events.map((ev) => (
-            <li key={ev._id} className="flex items-start justify-between gap-3 rounded-sm border border-navy-100 bg-white px-4 py-2 text-sm">
+            <li key={ev._id} className="flex items-start justify-between gap-3 rounded-xl border border-navy-100 bg-white px-4 py-2 text-sm">
               <div>
                 <p className="text-navy">{ev.heading}</p>
                 <p className="text-xs text-navy-400">

@@ -1,29 +1,21 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500", "600", "700"],
-});
+const display = Fraunces({ subsets: ["latin"], variable: "--font-display", style: ["normal", "italic"] });
+const body = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata = {
-  title: "The Little Moon Academy — Nursery to Class IX, Varanasi",
-  description: "The Little Moon Academy, Basani Bazar, Babatpur, Varanasi — an ideal school for your kids. Nursery to Class IX. Admissions open.",
+  title: "The Little Moon Academy — Nursery to Class VIII, Varanasi",
+  description: "The Little Moon Academy, Basani Bazar, Babatpur, Varanasi — an ideal school for your kids. Nursery to Class VIII. Admissions open.",
   icons: { icon: "/logo.png" },
 };
 
+export const viewport = { width: "device-width", initialScale: 1 };
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-body bg-gray-50 text-ink antialiased">{children}</body>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <body className="bg-ivory font-body text-ink antialiased">{children}</body>
     </html>
   );
 }

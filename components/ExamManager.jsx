@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8","Class 9"];
+const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8"];
 const blankSub = () => ({ name: "", date: "", startTime: "09:00", endTime: "12:00", maxMarks: 100 });
 const input = "rounded-lg border border-navy-100 px-2.5 py-1.5 text-sm";
 

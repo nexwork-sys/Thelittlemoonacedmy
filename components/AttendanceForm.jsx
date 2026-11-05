@@ -94,14 +94,14 @@ export default function AttendanceForm({ assignedClasses = [] }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end gap-4 rounded-sm border border-navy-100 bg-white p-4">
+      <div className="flex flex-wrap items-end gap-4 rounded-xl border border-navy-100 bg-white p-4">
         <div>
           <label className="mb-1 block text-xs text-navy-600">Class</label>
           <input
             value={className}
             onChange={(e) => setClassName(e.target.value)}
             placeholder="e.g. Class 6"
-            className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+            className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
           />
         </div>
         <div>
@@ -110,7 +110,7 @@ export default function AttendanceForm({ assignedClasses = [] }) {
             value={section}
             onChange={(e) => setSection(e.target.value)}
             placeholder="A"
-            className="w-16 rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+            className="w-16 rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
           />
         </div>
         <div>
@@ -119,14 +119,14 @@ export default function AttendanceForm({ assignedClasses = [] }) {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+            className="rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
           />
         </div>
         <button
           type="button"
           onClick={handleSave}
           disabled={saving || !students.length}
-          className="ml-auto rounded-sm bg-navy px-5 py-2 text-sm text-ivory transition-colors hover:bg-navy-600 disabled:opacity-50"
+          className="ml-auto rounded-xl bg-navy px-5 py-2 text-sm text-ivory transition-colors hover:bg-navy-600 disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save attendance"}
         </button>
@@ -134,16 +134,16 @@ export default function AttendanceForm({ assignedClasses = [] }) {
 
       {message && <p className="mt-3 text-sm text-navy-600">{message}</p>}
 
-      <div className="mt-4 rounded-sm border border-dashed border-brass/60 bg-brass/5 p-4">
+      <div className="mt-4 rounded-xl border border-dashed border-brass/60 bg-brass/5 p-4">
         <p className="text-xs font-medium uppercase tracking-wide text-brass-600">Smart Attendance</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <div className="flex gap-1.5 text-xs">
             <button type="button" onClick={() => setSmartMode("absent")}
-              className={`rounded-sm border px-2.5 py-1 ${smartMode === "absent" ? "border-brass bg-brass-50 text-navy" : "border-navy-100 text-navy-400"}`}>
+              className={`rounded-xl border px-2.5 py-1 ${smartMode === "absent" ? "border-brass bg-brass-50 text-navy" : "border-navy-100 text-navy-400"}`}>
               Mode A: Enter Absent rolls
             </button>
             <button type="button" onClick={() => setSmartMode("present")}
-              className={`rounded-sm border px-2.5 py-1 ${smartMode === "present" ? "border-brass bg-brass-50 text-navy" : "border-navy-100 text-navy-400"}`}>
+              className={`rounded-xl border px-2.5 py-1 ${smartMode === "present" ? "border-brass bg-brass-50 text-navy" : "border-navy-100 text-navy-400"}`}>
               Mode B: Enter Present rolls
             </button>
           </div>
@@ -151,10 +151,10 @@ export default function AttendanceForm({ assignedClasses = [] }) {
             value={rollInput}
             onChange={(e) => setRollInput(e.target.value)}
             placeholder={smartMode === "absent" ? "Absent roll numbers, e.g. 3, 7, 14" : "Present roll numbers, e.g. 1, 2, 4, 5"}
-            className="min-w-[220px] flex-1 rounded-sm border border-navy-100 px-3 py-1.5 text-sm"
+            className="min-w-[220px] flex-1 rounded-xl border border-navy-100 px-3 py-1.5 text-sm"
           />
           <button type="button" onClick={applySmartAttendance} disabled={!students.length}
-            className="rounded-sm bg-brass px-4 py-1.5 text-xs text-navy hover:opacity-90 disabled:opacity-50">
+            className="rounded-xl bg-brass px-4 py-1.5 text-xs text-navy hover:opacity-90 disabled:opacity-50">
             Apply
           </button>
         </div>
@@ -165,7 +165,7 @@ export default function AttendanceForm({ assignedClasses = [] }) {
         </p>
       </div>
 
-      <div className="mt-5 divide-y divide-navy-100 rounded-sm border border-navy-100 bg-white">
+      <div className="mt-5 divide-y divide-navy-100 rounded-xl border border-navy-100 bg-white">
         {loading && <p className="p-4 text-sm text-navy-400">Loading students...</p>}
         {!loading && !students.length && (
           <p className="p-4 text-sm text-navy-400">No students found for this class/section yet.</p>
@@ -182,7 +182,7 @@ export default function AttendanceForm({ assignedClasses = [] }) {
                   key={opt.value}
                   type="button"
                   onClick={() => setMarks({ ...marks, [s._id]: opt.value })}
-                  className={`rounded-sm border px-2.5 py-1 text-xs transition-colors ${
+                  className={`rounded-xl border px-2.5 py-1 text-xs transition-colors ${
                     marks[s._id] === opt.value ? opt.cls : "border-navy-100 text-navy-400"
                   }`}
                 >

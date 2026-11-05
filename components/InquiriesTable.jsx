@@ -63,7 +63,7 @@ export default function InquiriesTable() {
       <div className="flex flex-wrap items-center gap-2">
         <button
           onClick={() => setFilter("")}
-          className={`rounded-sm border px-3 py-1 text-xs ${!filter ? "border-navy bg-navy text-ivory" : "border-navy-100 text-navy-600"}`}
+          className={`rounded-xl border px-3 py-1 text-xs ${!filter ? "border-navy bg-navy text-ivory" : "border-navy-100 text-navy-600"}`}
         >
           All
         </button>
@@ -71,14 +71,14 @@ export default function InquiriesTable() {
           <button
             key={s}
             onClick={() => setFilter(s)}
-            className={`rounded-sm border px-3 py-1 text-xs ${filter === s ? "border-navy bg-navy text-ivory" : "border-navy-100 text-navy-600"}`}
+            className={`rounded-xl border px-3 py-1 text-xs ${filter === s ? "border-navy bg-navy text-ivory" : "border-navy-100 text-navy-600"}`}
           >
             {s}
           </button>
         ))}
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-sm border border-navy-100 bg-white">
+      <div className="mt-4 overflow-x-auto rounded-xl border border-navy-100 bg-white">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr className="border-b border-navy-100 text-left text-xs uppercase tracking-wide text-navy-400">
@@ -105,7 +105,7 @@ export default function InquiriesTable() {
                 <td className="px-4 py-3">{inq.mobileNumber}</td>
                 <td className="px-4 py-3">{inq.area}</td>
                 <td className="px-4 py-3">
-                  <span className={`rounded-sm px-2 py-0.5 text-xs ${STATUS_STYLES[inq.status] || "bg-navy-50 text-navy-600"}`}>
+                  <span className={`rounded-xl px-2 py-0.5 text-xs ${STATUS_STYLES[inq.status] || "bg-navy-50 text-navy-600"}`}>
                     {inq.status}
                   </span>
                 </td>
@@ -117,7 +117,7 @@ export default function InquiriesTable() {
                     value={inq.status}
                     disabled={updatingId === inq._id}
                     onChange={(e) => updateStatus(inq._id, e.target.value)}
-                    className="rounded-sm border border-navy-100 px-2 py-1 text-xs disabled:opacity-50"
+                    className="rounded-xl border border-navy-100 px-2 py-1 text-xs disabled:opacity-50"
                   >
                     {STATUS_OPTIONS.map((s) => (
                       <option key={s} value={s}>{s}</option>

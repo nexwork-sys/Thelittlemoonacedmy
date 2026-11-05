@@ -1,6 +1,6 @@
 # The Little Moon Academy — School Website + ERP (Next.js)
 
-Nursery → Class IX · Basani Bazar, Babatpur, Varanasi
+Nursery → Class VIII · Basani Bazar, Babatpur, Varanasi
 
 ## Setup
 1. `.env.local` me `MONGODB_URI`, `JWT_SECRET`, Cloudinary keys daalein.

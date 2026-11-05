@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8","Class 9"];
+const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8"];
 const input = "w-full rounded-lg border border-navy-100 px-3 py-2 text-sm focus:border-brass";
 const fmt = (d) => (d ? new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "-");
 

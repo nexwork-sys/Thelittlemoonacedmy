@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getFaceDescriptor } from "@/lib/faceApi";
 
-const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8","Class 9"];
+const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8"];
 const empty = { name: "", pin: "", phone: "", classTeacherOf: "" };
 
 // Admin adds teachers: name, 5-digit PIN, Class-Teacher class (no subject), face capture.

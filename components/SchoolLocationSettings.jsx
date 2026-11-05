@@ -119,7 +119,7 @@ export default function SchoolLocationSettings() {
 
   return (
     <>
-    <div className="max-w-xl rounded-sm border border-navy-100 bg-white p-5">
+    <div className="max-w-xl rounded-xl border border-navy-100 bg-white p-5">
       <h2 className="font-display text-lg text-navy">Attendance Geofence</h2>
       <p className="mt-1 text-sm text-navy-600">
         Set the school's location. Teachers can only punch in/out via face recognition when their
@@ -131,7 +131,7 @@ export default function SchoolLocationSettings() {
           type="button"
           onClick={fetchCurrentLocation}
           disabled={fetching}
-          className="rounded-sm bg-navy px-4 py-2 text-sm text-white hover:bg-navy-600 disabled:opacity-50"
+          className="rounded-xl bg-navy px-4 py-2 text-sm text-white hover:bg-navy-600 disabled:opacity-50"
         >
           {fetching ? "Fetching location…" : "Fetch Current Location"}
         </button>
@@ -153,7 +153,7 @@ export default function SchoolLocationSettings() {
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="mt-1 w-full rounded-sm border border-navy-100 px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-xl border border-navy-100 px-3 py-2 text-sm"
           placeholder="e.g. The Little Moon Academy, Main Gate"
         />
       </label>
@@ -185,13 +185,13 @@ export default function SchoolLocationSettings() {
         type="button"
         onClick={save}
         disabled={saving || latitude == null}
-        className="mt-5 w-full rounded-sm bg-brass px-4 py-2.5 text-sm font-medium text-navy hover:bg-brass-600 disabled:opacity-50"
+        className="mt-5 w-full rounded-xl bg-brass px-4 py-2.5 text-sm font-medium text-navy hover:bg-brass-600 disabled:opacity-50"
       >
         {saving ? "Saving…" : "Save School Location"}
       </button>
     </div>
 
-    <div className="mt-6 max-w-xl rounded-sm border border-navy-100 bg-white p-5">
+    <div className="mt-6 max-w-xl rounded-xl border border-navy-100 bg-white p-5">
       <h2 className="font-display text-lg text-navy">Late Attendance Buffer Time</h2>
       <p className="mt-1 text-sm text-navy-600">
         Set the school's shift start time and a grace period. A teacher whose punch-in falls after
@@ -206,7 +206,7 @@ export default function SchoolLocationSettings() {
             type="time"
             value={shiftStartTime}
             onChange={(e) => setShiftStartTime(e.target.value)}
-            className="mt-1 block rounded-sm border border-navy-100 px-3 py-2 text-sm"
+            className="mt-1 block rounded-xl border border-navy-100 px-3 py-2 text-sm"
           />
         </label>
         <label className="text-sm text-navy-700">
@@ -217,7 +217,7 @@ export default function SchoolLocationSettings() {
             max={120}
             value={gracePeriodMinutes}
             onChange={(e) => setGracePeriodMinutes(Number(e.target.value))}
-            className="mt-1 block w-32 rounded-sm border border-navy-100 px-3 py-2 text-sm"
+            className="mt-1 block w-32 rounded-xl border border-navy-100 px-3 py-2 text-sm"
           />
         </label>
       </div>
@@ -237,7 +237,7 @@ export default function SchoolLocationSettings() {
         type="button"
         onClick={saveTiming}
         disabled={savingTiming}
-        className="mt-4 rounded-sm bg-navy px-4 py-2 text-sm text-ivory hover:bg-navy-600 disabled:opacity-50"
+        className="mt-4 rounded-xl bg-navy px-4 py-2 text-sm text-ivory hover:bg-navy-600 disabled:opacity-50"
       >
         {savingTiming ? "Saving…" : "Save Attendance Timing"}
       </button>

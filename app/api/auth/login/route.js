@@ -52,6 +52,9 @@ export async function POST(req) {
     return res;
   } catch (err) {
     console.error("[auth/login]", err);
+    if (err?.name === "MongooseServerSelectionError" || err?.name === "MongoServerSelectionError" || /ECONNREFUSED|ENOTFOUND|selection/i.test(err?.message || "")) {
+      return Response.json({ error: "Database se connect nahi ho paa raha. Admin ko batayein (MongoDB Atlas Network Access check karein)." }, { status: 503 });
+    }
     return Response.json({ error: "Login failed. Please try again." }, { status: 500 });
   }
 }

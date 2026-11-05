@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/seed.js && next build",
+    "build": "(node scripts/seed.js || echo \"seed skipped: database not reachable\") && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "node scripts/seed.js"

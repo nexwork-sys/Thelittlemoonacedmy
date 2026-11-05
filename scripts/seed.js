@@ -16,7 +16,7 @@ async function main() {
     console.error("MONGODB_URI is not set. Add it to .env.local first.");
     process.exit(1);
   }
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 8000 });
   const users = mongoose.connection.collection("users");
 
   // Old versions had a unique email index; PIN-only accounts have no email.

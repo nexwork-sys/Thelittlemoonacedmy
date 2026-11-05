@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { monthLabel } from "@/lib/fees";
 
-const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8","Class 9"];
+const CLASSES = ["Nursery","LKG","UKG","Class 1","Class 2","Class 3","Class 4","Class 5","Class 6","Class 7","Class 8"];
 const inr = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 const fmt = (d) => (d ? new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "-");
 
