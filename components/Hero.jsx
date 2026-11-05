@@ -44,8 +44,8 @@ export default function Hero() {
             </div>
           </div>
         </div>
-        <button onClick={() => go(i - 1)} aria-label="Previous slide" className="absolute left-4 top-1/2 z-20 h-11 w-11 -translate-y-1/2 rounded-full bg-black/30 text-white backdrop-blur-sm hover:bg-black/60">‹</button>
-        <button onClick={() => go(i + 1)} aria-label="Next slide" className="absolute right-4 top-1/2 z-20 h-11 w-11 -translate-y-1/2 rounded-full bg-black/30 text-white backdrop-blur-sm hover:bg-black/60">›</button>
+        <button onClick={() => go(i - 1)} aria-label="Previous slide" className="absolute left-4 top-1/2 z-20 hidden h-11 sm:block w-11 -translate-y-1/2 rounded-full bg-black/30 text-white backdrop-blur-sm hover:bg-black/60">‹</button>
+        <button onClick={() => go(i + 1)} aria-label="Next slide" className="absolute right-4 top-1/2 z-20 hidden h-11 sm:block w-11 -translate-y-1/2 rounded-full bg-black/30 text-white backdrop-blur-sm hover:bg-black/60">›</button>
         <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-3">
           {SLIDES.map((_, n) => <button key={n} onClick={() => setI(n)} aria-label={`Slide ${n + 1}`} className={`h-3 w-3 rounded-full transition ${n === i ? "bg-amber-400" : "bg-white/50 hover:bg-white"}`} />)}
         </div>

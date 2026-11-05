@@ -55,18 +55,18 @@ export default function Header() {
       </div>
       <header className="sticky top-0 z-40 border-b border-navy-100/70 bg-white/85 backdrop-blur-lg">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5">
-          <Link href="/" className="flex min-w-0 items-center gap-2.5">
+          <Link href="/" className="flex min-w-0 flex-1 items-center gap-2.5">
             <Image src="/logo.png" alt="The Little Moon Academy logo" width={44} height={44} priority className="h-11 w-11 shrink-0 rounded-full" />
             <span className="min-w-0 leading-tight">
-              <span className="block truncate font-display text-base font-bold text-navy sm:text-xl">The Little Moon Academy</span>
-              <span className="hidden text-[11px] text-navy-400 sm:block">An ideal school for your kids</span>
+              <span className="block font-display text-[17px] font-bold leading-tight text-navy sm:text-xl">The Little Moon Academy</span>
+              <span className="block text-[10px] text-navy-400 sm:text-[11px]">An ideal school for your kids</span>
             </span>
           </Link>
           <nav className="hidden items-center gap-1 text-sm font-medium text-navy-600 lg:flex">
             {NAV_LINKS.map((l) => <a key={l.href} href={l.href} className="rounded-full px-3.5 py-2 transition hover:bg-navy-50 hover:text-navy">{l.label}</a>)}
           </nav>
           <div className="flex shrink-0 items-center gap-2">
-            <ErpMenu />
+            <div className="hidden lg:block"><ErpMenu /></div>
             <button className="grid h-10 w-10 place-items-center rounded-full border border-navy-100 text-navy lg:hidden" aria-label="Menu" aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">{menu ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
             </button>
@@ -75,6 +75,10 @@ export default function Header() {
         {menu && (
           <nav className="border-t border-navy-100 bg-white px-4 pb-3 pt-1 lg:hidden">
             {NAV_LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setMenu(false)} className="block rounded-xl px-3 py-3 text-sm font-medium text-navy-600 active:bg-navy-50">{l.label}</a>)}
+            <div className="mt-2 grid gap-2 border-t border-navy-100 pt-3 sm:grid-cols-2">
+              <Link href="/login?type=student" onClick={() => setMenu(false)} className="flex items-center justify-center gap-2 rounded-full bg-navy px-4 py-3 text-sm font-semibold text-white">🎓 Student Login</Link>
+              <Link href="/login?type=staff" onClick={() => setMenu(false)} className="flex items-center justify-center gap-2 rounded-full bg-brass px-4 py-3 text-sm font-semibold text-navy">🛠️ Admin / Teacher Login</Link>
+            </div>
           </nav>
         )}
       </header>
