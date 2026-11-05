@@ -23,17 +23,7 @@ export default function Footer() {
   return (
     <footer id="contact" className="bg-navy-900 text-white/80">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="-translate-y-8 rounded-3xl bg-brass px-6 py-7 text-navy shadow-soft sm:flex sm:items-center sm:justify-between sm:gap-6">
-          <div>
-            <h2 className="font-display text-2xl font-semibold">Admissions open for 2026–27</h2>
-            <p className="mt-1 text-sm text-navy/75">Nursery se Class VIII tak. Apni details bhejiye, hum aapko call karenge.</p>
-          </div>
-          <div className="mt-4 sm:mt-0 sm:shrink-0">
-            <AdmissionInquiryModal triggerLabel="Admission enquiry" triggerClassName="w-full rounded-full bg-navy px-6 py-3 text-sm font-bold text-white transition hover:bg-navy-700 sm:w-auto" />
-          </div>
-        </div>
-
-        <div className="grid gap-10 pb-10 pt-2 md:grid-cols-12">
+        <div className="grid gap-10 py-10 md:grid-cols-12">
           <div className="space-y-4 md:col-span-5">
             <div className="flex items-center gap-3">
               <Image src="/logo.png" alt="The Little Moon Academy" width={56} height={56} className="h-14 w-14 rounded-full bg-white" />
@@ -63,8 +53,9 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-2 border-t border-white/10 py-5 text-center text-xs text-white/55 sm:flex-row sm:text-left">
           <p>© {new Date().getFullYear()} The Little Moon Academy. All rights reserved.</p>
-          <p>Designed &amp; Developed by <strong className="font-semibold text-brass">{CREDIT.text}</strong></p>
+          <AdmissionInquiryModal triggerLabel="ADMISSION ENQUIRY" triggerClassName="rounded border-2 border-amber-400 px-4 py-1.5 text-xs font-bold uppercase text-white transition hover:bg-amber-400 hover:text-navy" />
         </div>
+        <p className="pb-6 text-center text-xs text-white/55">Designed &amp; Developed by <strong className="font-semibold text-brass">{CREDIT.text}</strong></p>
       </div>
     </footer>
   );

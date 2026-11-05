@@ -13,8 +13,8 @@ async function getPublicData() {
   try {
     await connectDB();
     const [toppers, events] = await Promise.all([
-      Topper.find({ featured: true }).sort({ rank: 1 }).limit(8).lean(),
-      Event.find({ published: true }).sort({ eventDate: -1 }).limit(6).lean(),
+      Topper.find({ featured: true }).sort({ rank: 1, displayOrder: 1 }).lean(),
+      Event.find({ published: true }).sort({ eventDate: -1 }).lean(),
     ]);
     return {
       toppers: JSON.parse(JSON.stringify(toppers)),

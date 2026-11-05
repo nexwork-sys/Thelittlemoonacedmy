@@ -12,7 +12,7 @@ export async function GET(req) {
   const filter = { featured: true };
   if (academicYear) filter.academicYear = academicYear;
 
-  const toppers = await Topper.find(filter).sort({ rank: 1, displayOrder: 1 }).limit(24);
+  const toppers = await Topper.find(filter).sort({ rank: 1, displayOrder: 1 });
   return Response.json({ toppers });
 }
 

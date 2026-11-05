@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const emptyForm = { heading: "", description: "", eventDate: "", category: "other", embedUrl: "" };
-const MAX_PHOTOS = 6;
+const MAX_PHOTOS = 5;
 
 function fileToDataUri(file) {
   return new Promise((resolve, reject) => {
@@ -116,11 +116,11 @@ export default function EventManager({ canDelete = true }) {
             onChange={(e) => handlePhotoPick(e.target.files)}
             className="w-full text-sm" />
           <p className="mt-1 text-xs text-navy-400">
-            Pick up to {MAX_PHOTOS} photos — they auto-play as a slideshow on the public card.
+            Pick 1 to {MAX_PHOTOS} photos — they auto-play as a slideshow on the public card.
             {photoFiles.length > 0 && ` ${photoFiles.length} selected.`}
           </p>
         </div>
-        <input placeholder="Or paste a video embed URL (YouTube, etc.)" value={form.embedUrl}
+        <input placeholder="Video link (YouTube / Google Drive) — optional" value={form.embedUrl}
           onChange={(e) => setForm({ ...form, embedUrl: e.target.value })}
           className="w-full rounded-xl border border-navy-100 px-3 py-2 text-sm" />
         {error && <p className="text-sm text-maroon">{error}</p>}

@@ -3,6 +3,16 @@ import Event from "@/models/Event";
 import { getSessionFromRequest } from "@/lib/auth";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 
+// Turns a normal YouTube / Google Drive share link into an embeddable one.
+function toEmbedUrl(raw = "") {
+  const u = String(raw).trim();
+  const yt = u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const dr = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+  if (dr) return `https://drive.google.com/file/d/${dr[1]}/preview`;
+  return u;
+}
+
 // GET /api/events — public, powers the Activities & Events gallery
 export async function GET(req) {
   await connectDB();
@@ -12,7 +22,7 @@ export async function GET(req) {
   const filter = { published: true };
   if (category) filter.category = category;
 
-  const events = await Event.find(filter).sort({ eventDate: -1 }).limit(50);
+  const events = await Event.find(filter).sort({ eventDate: -1 });
   return Response.json({ events });
 }
 
@@ -36,10 +46,13 @@ export async function POST(req) {
       return Response.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    // 1-5 photos per activity, plus one optional video.
+    const photos = mediaItems.filter((m) => !m.isEmbed).slice(0, 5);
+    const videos = mediaItems.filter((m) => m.isEmbed).slice(0, 1);
     const media = [];
-    for (const item of mediaItems) {
+    for (const item of [...photos, ...videos]) {
       if (item.isEmbed) {
-        media.push({ type: "video", url: item.url, isEmbed: true });
+        media.push({ type: "video", url: toEmbedUrl(item.url), isEmbed: true });
       } else {
         const uploaded = await uploadToCloudinary(item.photoDataUri, "events");
         media.push({ type: item.type || "image", url: uploaded.url, publicId: uploaded.publicId });

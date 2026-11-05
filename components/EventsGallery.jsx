@@ -38,7 +38,7 @@ function EventMedia({ heading, category, media = [] }) {
       {current.isEmbed ? (
         <iframe src={current.url} title={heading} className="h-full w-full" allowFullScreen />
       ) : (
-        <Image src={current.url} alt={heading} fill sizes="340px" className="object-cover" />
+        <Image src={current.url} alt={heading} fill sizes="(max-width: 640px) 100vw, 400px" unoptimized={current.url.endsWith(".svg")} className="object-cover" />
       )}
       {items.length > 1 && (
         <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
@@ -68,20 +68,18 @@ export default function EventsGallery({ events = [] }) {
         <h2 className="font-display text-3xl font-semibold text-navy sm:text-4xl">Activities &amp; Events</h2>
         <p className="mt-2 text-navy-600">School ki hali gatividhiyan, ek nazar me.</p>
 
-        <div className="-mx-5 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((ev, idx) => {
             return (
               <article
                 key={ev._id || idx}
-                className="w-[82vw] max-w-[340px] shrink-0 snap-start overflow-hidden rounded-3xl border border-navy-100 bg-white"
+                className="overflow-hidden rounded-3xl border border-navy-100 bg-white"
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-navy-50">
                   <EventMedia heading={ev.heading} category={ev.category} media={ev.media} />
                 </div>
                 <div className="p-4">
-                  <p className="text-xs font-semibold text-brass-600">
-                    {formatDate(ev.eventDate)}
-                  </p>
+                  {!ev.sample && <p className="text-xs font-semibold text-brass-600">{formatDate(ev.eventDate)}</p>}
                   <h3 className="mt-1 font-display text-lg font-semibold text-navy">{ev.heading}</h3>
                   <p className="mt-1.5 line-clamp-3 text-sm text-navy-600">{ev.description}</p>
                 </div>
@@ -94,26 +92,10 @@ export default function EventsGallery({ events = [] }) {
   );
 }
 
+// Sample activities shown until real ones are added from Admin > Activities & Events.
+const pics = (k, n) => Array.from({ length: n }, (_, i) => ({ type: "image", url: `/activities/${k}-${i + 1}.svg` }));
 const PLACEHOLDER_EVENTS = [
-  {
-    heading: "Annual Sports Day",
-    description: "Track and field events across all houses, capped with the inter-house relay final.",
-    eventDate: new Date(),
-    category: "sports",
-    media: [],
-  },
-  {
-    heading: "Science Exhibition",
-    description: "Student-built working models on show for parents, from Class 1 through Class 8.",
-    eventDate: new Date(),
-    category: "academic",
-    media: [],
-  },
-  {
-    heading: "Founders' Day",
-    description: "A cultural evening of songs, dance and skits by our students.",
-    eventDate: new Date(),
-    category: "celebration",
-    media: [],
-  },
+  { heading: "Annual Sports Day", description: "Races, relay and drill by our students across all classes, cheered on by parents and teachers.", category: "sports", media: pics("sports", 4), sample: true },
+  { heading: "Science Exhibition", description: "Student-made working models and experiments on display for parents, from Class 1 through Class 8.", category: "academic", media: pics("science", 5), sample: true },
+  { heading: "Annual Function", description: "A cultural evening of songs, dance and skits by our students.", category: "cultural", media: pics("function", 3), sample: true },
 ];
