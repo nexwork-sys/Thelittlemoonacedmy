@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -13,7 +15,7 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
       <Link href="/admin/dashboard" className="text-sm text-navy-400 hover:text-navy">&larr; Dashboard</Link>
-      <h1 className="mt-2 font-display text-3xl font-bold text-navy">Exams, Time Table & Admit Cards</h1>
+      <h1 className="mt-2 font-display text-3xl font-bold text-navy">Exams, Time Table &amp; Admit Cards</h1>
       <p className="mb-6 mt-1 text-sm text-navy-600">Exam time table banayein, admit card open karein, marks enter karke result publish karein.</p>
       <ExamManager role="admin" />
     </div>
