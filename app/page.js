@@ -1,0 +1,43 @@
+import { connectDB } from "../lib/mongodb";
+import Topper from "../models/Topper";
+import Event from "../models/Event";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import ToppersCorner from "../components/ToppersCorner";
+import EventsGallery from "../components/EventsGallery";
+import Footer from "../components/Footer";
+
+export const revalidate = 60; // refresh public data every minute
+
+async function getPublicData() {
+  try {
+    await connectDB();
+    const [toppers, events] = await Promise.all([
+      Topper.find({ featured: true }).sort({ rank: 1, displayOrder: 1 }).lean(),
+      Event.find({ published: true }).sort({ eventDate: -1 }).lean(),
+    ]);
+    return {
+      toppers: JSON.parse(JSON.stringify(toppers)),
+      events: JSON.parse(JSON.stringify(events)),
+    };
+  } catch (err) {
+    console.warn("[home] Falling back to placeholder content:", err.message);
+    return { toppers: [], events: [] };
+  }
+}
+
+export default async function HomePage() {
+  const { toppers, events } = await getPublicData();
+
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <ToppersCorner toppers={toppers} />
+        <EventsGallery events={events} />
+      </main>
+      <Footer />
+    </>
+  );
+}

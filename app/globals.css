@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+html, body { max-width: 100%; overflow-x: clip; }
+img, svg, video, iframe { max-width: 100%; }
+
+::selection { background: #FFE08A; color: #0F1B3D; }
+:focus-visible { outline: 2px solid #0F1B3D; outline-offset: 2px; }
+
+/* Consistent, modern form controls across every ERP screen */
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea {
+  border-radius: 0.75rem;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: #FFC53D !important; box-shadow: 0 0 0 3px rgba(255,197,61,.35);
+}
+/* 16px inputs stop iOS Safari zooming the page on focus */
+@media (max-width: 640px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+@keyframes twinkle { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
+.twinkle { animation: twinkle 3.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+@media print { body { background: #fff !important; } }
