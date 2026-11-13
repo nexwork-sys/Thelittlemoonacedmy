@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Component, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { monthLabel } from "@/lib/fees";
@@ -23,12 +23,52 @@ const Card = ({ title, children, className = "" }) => (
   </div>
 );
 
+const arr = (v) => (Array.isArray(v) ? v : []);
+function normalize(d) {
+  const f = d.fees || {};
+  return {
+    ...d,
+    student: d.student || {},
+    school: d.school || {},
+    admitCards: arr(d.admitCards),
+    allMonths: arr(d.allMonths),
+    fees: {
+      monthlyFee: 0, due: 0, paid: 0, awaiting: 0, balance: 0, pendingMonths: 0,
+      ...f,
+      months: arr(f.months),
+      payments: arr(f.payments).map((p) => ({ ...p, months: arr(p.months) })),
+    },
+    attendance: { percent: null, totalDays: 0, present: 0, absent: 0, ...(d.attendance || {}), log: arr(d.attendance?.log) },
+    exams: arr(d.exams).map((e) => ({ ...e, subjects: arr(e.subjects) })),
+  };
+}
+
+class ErrorBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="p-10 text-center text-red-700">
+          <p className="font-bold">Dashboard load nahi ho paya</p>
+          <p className="mt-2 text-sm">{String(this.state.error?.message || this.state.error)}</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+export default function StudentERP() {
+  return <ErrorBoundary><StudentERPInner /></ErrorBoundary>;
+}
+
 const TABS = [
   ["home", "🏠", "Home"], ["fees", "💰", "Fees"], ["attendance", "📅", "Attendance"],
   ["exams", "📝", "Exam & Admit Card"], ["results", "🏆", "Results"],
 ];
 
-export default function StudentERP() {
+function StudentERPInner() {
   const router = useRouter();
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
@@ -39,7 +79,7 @@ export default function StudentERP() {
     fetch("/api/student/me").then(async (r) => {
       const d = await r.json();
       if (!r.ok) setErr(d.error || "Could not load");
-      else setData(d);
+      else setData(normalize(d));
     });
   }
   useEffect(load, []);
