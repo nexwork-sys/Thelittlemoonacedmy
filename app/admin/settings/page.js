@@ -33,9 +33,7 @@ export default async function AdminSettingsPage() {
 
       <div className="mt-8 space-y-8">
         <SchoolLocationSettings />
-        
-        {/* Optional: Restrict payment configuration strictly to superadmin */}
-        {session.role === "superadmin" && <PaymentSettings />}
+        <PaymentSettings />
       </div>
     </div>
   );
