@@ -120,7 +120,7 @@ function StudentERPInner() {
         </header>
 
         <main className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-          {tab === "home" && <Home {...{ s, fees, attendance, exams, setTab }} />}
+          {tab === "home" && <Home {...{ s, fees, attendance, exams, admitCards, setTab }} />}
           {tab === "fees" && <Fees {...{ s, fees, school, data, reload: load, setDoc }} />}
           {tab === "attendance" && <Attendance a={attendance} />}
           {tab === "exams" && <Exams {...{ exams, admitCards, locked, requested, reload: load }} />}
@@ -143,7 +143,7 @@ function Stat({ label, value, sub, tone = "navy", onClick }) {
   );
 }
 
-function Home({ s, fees, attendance, exams, setTab }) {
+function Home({ s, fees, attendance, exams, admitCards = [], setTab }) {
   const next = exams.find((e) => e.subjects.some((x) => x.date && new Date(x.date) >= new Date()));
   return (
     <>
