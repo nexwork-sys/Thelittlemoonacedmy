@@ -36,6 +36,10 @@ export const PUT = requireRole(["superadmin", "admin"], async (req, _ctx, sessio
       affiliation,
       upiId,
       upiQrDataUri,
+      upiLabel,
+      upiId2,
+      upiQr2DataUri,
+      upiLabel2,
       logoDataUri,
       shiftStartTime,
       gracePeriodMinutes,
@@ -63,6 +67,9 @@ export const PUT = requireRole(["superadmin", "admin"], async (req, _ctx, sessio
     if (phone !== undefined) set.phone = phone;
     if (affiliation !== undefined) set.affiliation = affiliation;
     if (upiId !== undefined) set.upiId = upiId;
+    if (upiLabel !== undefined) set.upiLabel = upiLabel;
+    if (upiId2 !== undefined) set.upiId2 = upiId2;
+    if (upiLabel2 !== undefined) set.upiLabel2 = upiLabel2;
     if (shiftStartTime !== undefined) {
       if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(shiftStartTime)) {
         return Response.json({ error: "shiftStartTime must be in HH:MM (24-hour) format" }, { status: 400 });
@@ -89,6 +96,12 @@ export const PUT = requireRole(["superadmin", "admin"], async (req, _ctx, sessio
       const qr = await uploadToCloudinary(upiQrDataUri, "payment-qr");
       set.upiQrUrl = qr.url;
       set.upiQrPublicId = qr.publicId;
+    }
+
+    if (upiQr2DataUri) {
+      const qr2 = await uploadToCloudinary(upiQr2DataUri, "payment-qr");
+      set.upiQr2Url = qr2.url;
+      set.upiQr2PublicId = qr2.publicId;
     }
 
     const settings = await SchoolSettings.findOneAndUpdate(

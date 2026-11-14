@@ -78,7 +78,8 @@ export const GET = requireRole(["student"], async (_req, _c, session) => {
     fees: { ...fees, payments },
     attendance,
     exams: examList,
-    school: { name: settings?.schoolName, upiId: settings?.upiId, upiQrUrl: settings?.upiQrUrl, phone: settings?.phone },
+    school: { name: settings?.schoolName, upiId: settings?.upiId, upiQrUrl: settings?.upiQrUrl, upiLabel: settings?.upiLabel,
+      upiId2: settings?.upiId2, upiQr2Url: settings?.upiQr2Url, upiLabel2: settings?.upiLabel2, phone: settings?.phone },
     allMonths: allSessionMonths(new Date(), startMonth),
   });
 });

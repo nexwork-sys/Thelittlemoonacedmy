@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { monthLabel } from "@/lib/fees";
@@ -23,52 +23,12 @@ const Card = ({ title, children, className = "" }) => (
   </div>
 );
 
-const arr = (v) => (Array.isArray(v) ? v : []);
-function normalize(d) {
-  const f = d.fees || {};
-  return {
-    ...d,
-    student: d.student || {},
-    school: d.school || {},
-    admitCards: arr(d.admitCards),
-    allMonths: arr(d.allMonths),
-    fees: {
-      monthlyFee: 0, due: 0, paid: 0, awaiting: 0, balance: 0, pendingMonths: 0,
-      ...f,
-      months: arr(f.months),
-      payments: arr(f.payments).map((p) => ({ ...p, months: arr(p.months) })),
-    },
-    attendance: { percent: null, totalDays: 0, present: 0, absent: 0, ...(d.attendance || {}), log: arr(d.attendance?.log) },
-    exams: arr(d.exams).map((e) => ({ ...e, subjects: arr(e.subjects) })),
-  };
-}
-
-class ErrorBoundary extends Component {
-  state = { error: null };
-  static getDerivedStateFromError(error) { return { error }; }
-  render() {
-    if (this.state.error) {
-      return (
-        <div className="p-10 text-center text-red-700">
-          <p className="font-bold">Dashboard load nahi ho paya</p>
-          <p className="mt-2 text-sm">{String(this.state.error?.message || this.state.error)}</p>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-export default function StudentERP() {
-  return <ErrorBoundary><StudentERPInner /></ErrorBoundary>;
-}
-
 const TABS = [
   ["home", "🏠", "Home"], ["fees", "💰", "Fees"], ["attendance", "📅", "Attendance"],
   ["exams", "📝", "Exam & Admit Card"], ["results", "🏆", "Results"],
 ];
 
-function StudentERPInner() {
+export default function StudentERP() {
   const router = useRouter();
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
@@ -79,7 +39,7 @@ function StudentERPInner() {
     fetch("/api/student/me").then(async (r) => {
       const d = await r.json();
       if (!r.ok) setErr(d.error || "Could not load");
-      else setData(normalize(d));
+      else setData(d);
     });
   }
   useEffect(load, []);
@@ -120,7 +80,7 @@ function StudentERPInner() {
         </header>
 
         <main className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-          {tab === "home" && <Home {...{ s, fees, attendance, exams, admitCards, setTab }} />}
+          {tab === "home" && <Home {...{ s, fees, attendance, exams, setTab }} />}
           {tab === "fees" && <Fees {...{ s, fees, school, data, reload: load, setDoc }} />}
           {tab === "attendance" && <Attendance a={attendance} />}
           {tab === "exams" && <Exams {...{ exams, admitCards, locked, requested, reload: load }} />}
@@ -143,7 +103,7 @@ function Stat({ label, value, sub, tone = "navy", onClick }) {
   );
 }
 
-function Home({ s, fees, attendance, exams, admitCards = [], setTab }) {
+function Home({ s, fees, attendance, exams, setTab }) {
   const next = exams.find((e) => e.subjects.some((x) => x.date && new Date(x.date) >= new Date()));
   return (
     <>
@@ -280,11 +240,25 @@ function Fees({ s, fees, school, data, reload, setDoc }) {
 
             {mode === "upi" ? (
               <div className="rounded-xl border border-dashed border-brass bg-brass-50 p-4 text-center">
-                {school.upiQrUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={school.upiQrUrl} alt="School UPI QR" className="mx-auto h-56 w-56 rounded-lg bg-white object-contain p-2" />
-                ) : <p className="text-sm text-navy-400">School ka QR abhi set nahi hai. Admin se contact karein.</p>}
-                {school.upiId && <p className="mt-2 text-sm">UPI ID: <b>{school.upiId}</b></p>}
+                {(() => {
+                  const qrs = [
+                    { url: school.upiQrUrl, id: school.upiId, label: school.upiLabel || "QR 1" },
+                    { url: school.upiQr2Url, id: school.upiId2, label: school.upiLabel2 || "QR 2" },
+                  ].filter((q) => q.url);
+                  if (!qrs.length) return <p className="text-sm text-navy-400">School ka QR abhi set nahi hai. Admin se contact karein.</p>;
+                  return (
+                    <div className="flex flex-wrap items-start justify-center gap-4">
+                      {qrs.map((q, i) => (
+                        <div key={i}>
+                          {qrs.length > 1 && <p className="mb-1 text-xs font-bold text-navy-600">{q.label}</p>}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={q.url} alt={`School UPI QR ${i + 1}`} className="mx-auto h-48 w-48 rounded-lg bg-white object-contain p-2" />
+                          {q.id && <p className="mt-1 text-sm">UPI ID: <b>{q.id}</b></p>}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
                 <p className="mt-1 text-xs text-navy-600">Scan karke <b>{inr(amount)}</b> pay karein, phir neeche Submit karein.</p>
                 <input placeholder="UPI Transaction / UTR no. (optional)" value={upiRef} onChange={(e) => setUpiRef(e.target.value)}
                   className="mx-auto mt-3 block w-full max-w-xs rounded-lg border border-navy-100 bg-white px-3 py-2 text-sm" />
