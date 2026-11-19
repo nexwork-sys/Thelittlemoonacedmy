@@ -20,6 +20,7 @@ const StudentSchema = new mongoose.Schema(
     address: { type: String },
     academicYear: { type: String, required: true }, // e.g. "2026-27"
     monthlyFee: { type: Number, default: 0 }, // 0 = use the class default
+    vanFee: { type: Number, default: 0 }, // monthly school-van fee; 0 = student does not use the van
     admissionDate: { type: Date, default: Date.now },
     active: { type: Boolean, default: true },
     lastReminderAt: { type: Date },

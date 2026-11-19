@@ -46,6 +46,7 @@ export const POST = requireRole(["superadmin", "admin", "teacher"], async (req, 
       guardianMobile: body.guardianMobile, address: body.address,
       gender: body.gender || undefined, dob: body.dob || undefined,
       monthlyFee: Number(body.monthlyFee) || 0,
+      vanFee: Math.max(Number(body.vanFee) || 0, 0),
       academicYear: body.academicYear || currentAcademicYear(),
     };
     let student;

@@ -30,11 +30,13 @@ export const GET = requireRole(["superadmin", "admin", "teacher"], async (req, _
   payments.forEach((p) => (byStudent[p.student] ||= []).push(p));
 
   const rows = students.map((s) => {
-    const monthlyFee = s.monthlyFee || feeOf[s.className] || 0;
+    const tuitionFee = s.monthlyFee || feeOf[s.className] || 0;
+    const vanFee = s.vanFee || 0;
+    const monthlyFee = tuitionFee + vanFee; // van fee is billed together with tuition each month
     const sum = feeSummary({ monthlyFee, payments: byStudent[s._id] || [], startMonth: settings?.sessionStartMonth || 4, admissionDate: s.admissionDate });
     return {
       _id: s._id, studentId: s.studentId, name: s.name, className: s.className, rollNumber: s.rollNumber,
-      guardianMobile: s.guardianMobile, lastReminderAt: s.lastReminderAt, docUnlock: !!s.docUnlock, docRequestAt: s.docRequestAt, ...sum, months: undefined,
+      guardianMobile: s.guardianMobile, tuitionFee, vanFee, lastReminderAt: s.lastReminderAt, docUnlock: !!s.docUnlock, docRequestAt: s.docRequestAt, ...sum, months: undefined,
     };
   });
   const totals = {

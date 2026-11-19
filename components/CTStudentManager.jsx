@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const empty = { name: "", fatherName: "", guardianMobile: "", rollNumber: "", section: "A", monthlyFee: "" };
+const empty = { name: "", fatherName: "", guardianMobile: "", rollNumber: "", section: "A", monthlyFee: "", vanFee: "" };
 
 // Class teacher adds students. Each student gets an auto Student ID that opens the Student ERP.
 export default function CTStudentManager({ classTeacherOf }) {
@@ -35,6 +35,13 @@ export default function CTStudentManager({ classTeacherOf }) {
     load();
   }
 
+  async function setVan(s) {
+    const v = prompt(`${s.name} ki monthly VAN fees (₹). 0 = van nahi leta`, s.vanFee || 0);
+    if (v == null) return;
+    await fetch(`/api/students/${s._id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vanFee: Number(v) || 0 }) });
+    load();
+  }
+
   const input = "w-full rounded-lg border border-navy-100 px-3 py-2 text-sm focus:border-brass";
   return (
     <div className="space-y-8">
@@ -46,6 +53,7 @@ export default function CTStudentManager({ classTeacherOf }) {
           <div><label className="text-xs text-navy-400">Father ka naam</label><input value={form.fatherName} onChange={(e) => setForm({ ...form, fatherName: e.target.value })} className={input} /></div>
           <div><label className="text-xs text-navy-400">Guardian Mobile</label><input inputMode="numeric" maxLength={10} value={form.guardianMobile} onChange={(e) => setForm({ ...form, guardianMobile: e.target.value.replace(/\D/g, "") })} className={input} /></div>
           <div><label className="text-xs text-navy-400">Monthly Fee ₹ (khali = class default)</label><input type="number" min="0" value={form.monthlyFee} onChange={(e) => setForm({ ...form, monthlyFee: e.target.value })} className={input} /></div>
+          <div><label className="text-xs text-navy-400">Van Fee ₹/month (van nahi to khali)</label><input type="number" min="0" value={form.vanFee} onChange={(e) => setForm({ ...form, vanFee: e.target.value })} className={input} /></div>
         </div>
         {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
         {created && (
@@ -59,16 +67,17 @@ export default function CTStudentManager({ classTeacherOf }) {
 
       <div className="overflow-x-auto rounded-xl border border-navy-100 bg-white">
         <table className="w-full min-w-[620px] text-sm">
-          <thead><tr className="border-b text-left text-xs uppercase text-navy-400"><th className="px-4 py-3">Roll</th><th>Student ID</th><th>Name</th><th>Mobile</th><th>Fee/month</th><th /></tr></thead>
+          <thead><tr className="border-b text-left text-xs uppercase text-navy-400"><th className="px-4 py-3">Roll</th><th>Student ID</th><th>Name</th><th>Mobile</th><th>Fee/month</th><th>Van fee</th><th /></tr></thead>
           <tbody>
             {students.map((s) => (
               <tr key={s._id} className="border-b border-navy-50 last:border-0">
                 <td className="px-4 py-3">{s.rollNumber ?? "-"}</td><td className="font-semibold">{s.studentId}</td><td>{s.name}</td><td>{s.guardianMobile || "-"}</td>
                 <td><button onClick={() => setFee(s)} className="underline">{s.monthlyFee ? `₹${s.monthlyFee}` : "default"}</button></td>
+                <td><button onClick={() => setVan(s)} className="underline">{s.vanFee ? `₹${s.vanFee}` : "No van"}</button></td>
                 <td className="pr-4 text-right"><button onClick={() => remove(s)} className="text-red-600 underline">Remove</button></td>
               </tr>
             ))}
-            {!students.length && <tr><td colSpan={6} className="px-4 py-6 text-center text-navy-400">Abhi koi student nahi.</td></tr>}
+            {!students.length && <tr><td colSpan={7} className="px-4 py-6 text-center text-navy-400">Abhi koi student nahi.</td></tr>}
           </tbody>
         </table>
       </div>

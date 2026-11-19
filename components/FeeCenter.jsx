@@ -45,6 +45,12 @@ export default function FeeCenter({ role = "admin" }) {
     await fetch("/api/fees/unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ studentId: r._id, unlock: on }) });
     load();
   }
+  async function setVan(r) {
+    const v = prompt(`${r.name} ki monthly VAN fees (₹). 0 = van nahi leta`, r.vanFee || 0);
+    if (v == null) return;
+    await fetch(`/api/students/${r._id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vanFee: Number(v) || 0 }) });
+    load();
+  }
   async function lookup(e) {
     e.preventDefault();
     const d = await fetch(`/api/fees/payments?receipt=${encodeURIComponent(receipt)}`).then((r) => r.json());
@@ -141,6 +147,7 @@ export default function FeeCenter({ role = "admin" }) {
                     <td className="text-right text-emerald-700">{inr(r.paid)}</td>
                     <td className="text-right font-bold text-red-600">{inr(r.balance)}{r.awaiting ? <span className="block text-xs font-normal text-amber-600">{inr(r.awaiting)} approval pending</span> : null}</td>
                     <td className="space-x-2 whitespace-nowrap pl-3 text-right">
+                      <button onClick={() => setVan(r)} className="rounded-md border border-navy-100 px-2.5 py-1 text-xs">{r.vanFee ? `🚌 Van ₹${r.vanFee}` : "+ Van fee"}</button>
                       {r.balance > 0 && r.guardianMobile && <a href={waLink(r)} target="_blank" rel="noreferrer" className="rounded-md bg-green-500 px-2.5 py-1 text-xs font-bold text-white">WhatsApp</a>}
                       {admin && r.balance > 0 && <button onClick={() => unlock(r, !r.docUnlock)} className={`rounded-md border px-2.5 py-1 text-xs ${r.docUnlock ? "border-emerald-500 text-emerald-700" : "border-navy-100"}`}>{r.docUnlock ? "✔ Download allowed" : "Allow download"}</button>}
                       {admin && r.balance > 0 && <button onClick={() => remind([r])} className="rounded-md border border-brass px-2.5 py-1 text-xs">{r.lastReminderAt ? `Reminded ${fmt(r.lastReminderAt)}` : "Remind"}</button>}

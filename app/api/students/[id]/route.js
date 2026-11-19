@@ -5,6 +5,7 @@ import { requireRole, isClassTeacherFor } from "@/lib/auth";
 
 const EDITABLE_FIELDS = [
   "monthlyFee",
+  "vanFee",
   "name",
   "fatherName",
   "motherName",

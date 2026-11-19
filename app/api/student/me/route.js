@@ -23,8 +23,10 @@ export const GET = requireRole(["student"], async (_req, _c, session) => {
     AdmitCard.find({ student: s._id }).sort({ createdAt: -1 }).lean(),
   ]);
   const startMonth = settings?.sessionStartMonth || 4;
-  const monthlyFee = s.monthlyFee || classFee?.monthlyFee || 0;
-  const fees = feeSummary({ monthlyFee, payments, startMonth, admissionDate: s.admissionDate });
+  const tuitionFee = s.monthlyFee || classFee?.monthlyFee || 0;
+  const vanFee = s.vanFee || 0;
+  const monthlyFee = tuitionFee + vanFee; // tuition + van fee
+  const fees = { ...feeSummary({ monthlyFee, payments, startMonth, admissionDate: s.admissionDate }), tuitionFee, vanFee };
 
   // Attendance % for the current session (present/late = 1, half-day = 0.5, leave ignored)
   const sessionStart = new Date(allSessionMonths(new Date(), startMonth)[0] + "-01T00:00:00");
