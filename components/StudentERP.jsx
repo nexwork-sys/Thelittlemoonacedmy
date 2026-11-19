@@ -142,11 +142,17 @@ function Home({ s, fees, attendance, exams, setTab, van }) {
   );
 }
 
-function Fees({ s, fees, school, data, reload, setDoc, kind = "school" }) {
-  const isVan = kind === "van";
-  if (isVan && !fees.enabled && !fees.payments.length) {
+function Fees(props) {
+  const { fees, kind = "school" } = props;
+  // Van tab: nothing to pay if the van fee isn't set (also covers an older API without `van`).
+  if (kind === "van" && (!fees || (!fees.enabled && !(fees.payments || []).length))) {
     return <Card title="Van Fee"><p className="text-sm text-navy-600">Aapki van fee abhi set nahi hai. Agar aap school van se aate hain to class teacher ya school office se van fee set karwayein.</p></Card>;
   }
+  return <FeesPanel {...props} />;
+}
+
+function FeesPanel({ s, fees, school, data, reload, setDoc, kind = "school" }) {
+  const isVan = kind === "van";
   const due = fees.months.filter((m) => m.status !== "paid").map((m) => m.month);
   const [months, setMonths] = useState(due.slice(0, 1));
   const [amount, setAmount] = useState("");
