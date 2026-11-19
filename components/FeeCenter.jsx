@@ -71,7 +71,7 @@ export default function FeeCenter({ role = "admin" }) {
   }
 
   const t = ov.totals || {};
-  const rows = (ov.rows || []).filter((r) => (onlyDue ? r.balance > 0 : true));
+  const rows = (ov.rows || []).filter((r) => (onlyDue ? r.balance > 0 || r.vanBalance > 0 : true));
   const tabs = [
     ...(admin ? [["approvals", `Approvals${pending.length ? ` (${pending.length})` : ""}`]] : []),
     ["overview", "Pending Fees"], ["history", "All Receipts"], ["lookup", "Receipt Check"],
@@ -116,7 +116,7 @@ export default function FeeCenter({ role = "admin" }) {
             <div key={p._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-white p-4">
               <div className="text-sm">
                 <p className="font-bold text-navy">{p.studentName} <span className="font-normal text-navy-400">· {p.className} · Roll {p.rollNumber ?? "-"} · {p.studentId}</span></p>
-                <p className="mt-0.5">Receipt <b>{p.receiptNo}</b> · {fmt(p.createdAt)} · <b className="uppercase">{p.mode}</b>{p.receivedBy && <> → cash diya: <b>{p.receivedBy}</b></>}{p.upiRef && <> · UTR {p.upiRef}</>}</p>
+                <p className="mt-0.5">{p.feeType === "van" && <span className="mr-1 rounded bg-blue-100 px-1.5 py-0.5 text-xs font-bold text-blue-700">🚌 VAN FEE</span>}Receipt <b>{p.receiptNo}</b> · {fmt(p.createdAt)} · <b className="uppercase">{p.mode}</b>{p.receivedBy && <> → cash diya: <b>{p.receivedBy}</b></>}{p.upiRef && <> · UTR {p.upiRef}</>}</p>
                 <p className="text-xs text-navy-400">{p.months.map(monthLabel).join(", ")}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -136,14 +136,15 @@ export default function FeeCenter({ role = "admin" }) {
             {admin && rows.length > 0 && <button onClick={() => remind(rows)} className="rounded-lg bg-brass px-4 py-2 text-sm font-bold text-navy">🔔 Sabko Reminder bhejein ({rows.length})</button>}
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-sm">
-              <thead><tr><th className={th}>Student</th><th className={th}>Class</th><th className={th}>Pending months</th><th className={`${th} text-right`}>Paid</th><th className={`${th} text-right`}>Pending</th><th className={th}> </th></tr></thead>
+            <table className="w-full min-w-[820px] text-sm">
+              <thead><tr><th className={th}>Student</th><th className={th}>Class</th><th className={th}>Pending months</th><th className={`${th} text-right`}>Van pending</th><th className={`${th} text-right`}>Paid</th><th className={`${th} text-right`}>Pending</th><th className={th}> </th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r._id} className="border-t border-navy-50">
                     <td className="py-2"><b>{r.name}</b><p className="text-xs text-navy-400">{r.studentId}</p></td>
                     <td>{r.className}{r.rollNumber ? ` · ${r.rollNumber}` : ""}</td>
                     <td>{r.pendingMonths}</td>
+                    <td className="text-right text-blue-700">{r.vanFee ? inr(r.vanBalance) : "-"}{r.vanAwaiting ? <span className="block text-xs text-amber-600">{inr(r.vanAwaiting)} approval</span> : null}</td>
                     <td className="text-right text-emerald-700">{inr(r.paid)}</td>
                     <td className="text-right font-bold text-red-600">{inr(r.balance)}{r.awaiting ? <span className="block text-xs font-normal text-amber-600">{inr(r.awaiting)} approval pending</span> : null}</td>
                     <td className="space-x-2 whitespace-nowrap pl-3 text-right">
@@ -154,7 +155,7 @@ export default function FeeCenter({ role = "admin" }) {
                     </td>
                   </tr>
                 ))}
-                {!rows.length && <tr><td colSpan={6} className="py-6 text-center text-navy-400">Koi student nahi mila.</td></tr>}
+                {!rows.length && <tr><td colSpan={7} className="py-6 text-center text-navy-400">Koi student nahi mila.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -168,7 +169,7 @@ export default function FeeCenter({ role = "admin" }) {
             <tbody>
               {all.map((p) => (
                 <tr key={p._id} className="border-t border-navy-50">
-                  <td className="py-2 font-semibold">{p.receiptNo}</td><td>{p.studentName} <span className="text-xs text-navy-400">{p.className}</span></td>
+                  <td className="py-2 font-semibold">{p.receiptNo}{p.feeType === "van" && <span className="ml-1 rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-700">Van</span>}</td><td>{p.studentName} <span className="text-xs text-navy-400">{p.className}</span></td>
                   <td>{fmt(p.createdAt)}</td><td className="uppercase">{p.mode}{p.receivedBy ? ` (${p.receivedBy})` : ""}</td>
                   <td className="text-right font-semibold">{inr(p.amount)}</td>
                   <td className="pl-3 capitalize">{p.status}{admin && p.status !== "approved" && <button onClick={() => decide(p._id, "approved")} className="ml-2 text-xs text-emerald-700 underline">approve</button>}</td>
@@ -190,7 +191,7 @@ export default function FeeCenter({ role = "admin" }) {
           {found === false && <p className="mt-3 text-sm text-red-600">Ye receipt nahi mili (ya ye aapki class ki nahi hai).</p>}
           {found && (
             <div className="mt-4 rounded-lg bg-gray-50 p-4 text-sm">
-              <p className="font-bold">{found.studentName} · {found.className} · Roll {found.rollNumber ?? "-"}</p>
+              <p className="font-bold">{found.feeType === "van" ? "🚌 Van Fee · " : ""}{found.studentName} · {found.className} · Roll {found.rollNumber ?? "-"}</p>
               <p>{inr(found.amount)} · {found.mode.toUpperCase()}{found.receivedBy ? ` · Cash: ${found.receivedBy}` : ""} · {found.months.map(monthLabel).join(", ")}</p>
               <p className="mt-1">Status: <b className="capitalize">{found.status}</b>{found.status === "pending" && " — admin approve karega tab fees jama hogi."}</p>
               {admin && found.status !== "approved" && <button onClick={() => { decide(found._id, "approved"); setFound(null); }} className="mt-2 rounded-lg bg-emerald-600 px-4 py-1.5 text-sm font-bold text-white">Approve</button>}

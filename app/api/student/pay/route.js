@@ -9,7 +9,8 @@ import { makeReceiptNo } from "@/lib/fees";
 //   upi : { months, amount, mode:"upi", upiRef? }
 export const POST = requireRole(["student"], async (req, _c, session) => {
   try {
-    const { months, amount, mode, receivedBy, upiRef } = await req.json();
+    const { months, amount, mode, receivedBy, upiRef, feeType } = await req.json();
+    const type = feeType === "van" ? "van" : "school";
     const amt = Number(amount);
     if (!Array.isArray(months) || !months.length) return Response.json({ error: "Select at least one month" }, { status: 400 });
     if (!amt || amt <= 0) return Response.json({ error: "Enter a valid amount" }, { status: 400 });
@@ -21,12 +22,14 @@ export const POST = requireRole(["student"], async (req, _c, session) => {
     const s = await Student.findById(session.sub);
     if (!s) return Response.json({ error: "Student not found" }, { status: 404 });
 
+    if (type === "van" && !(s.vanFee > 0)) return Response.json({ error: "Aapki van fee set nahi hai. School se contact karein." }, { status: 400 });
+
     let payment;
     for (let i = 0; i < 5 && !payment; i++) {
       try {
         payment = await FeePayment.create({
           student: s._id, studentId: s.studentId, studentName: s.name, className: s.className, rollNumber: s.rollNumber,
-          receiptNo: makeReceiptNo(), months, amount: amt, mode,
+          receiptNo: makeReceiptNo(), feeType: type, months, amount: amt, mode,
           receivedBy: mode === "cash" ? String(receivedBy).trim() : undefined,
           upiRef: mode === "upi" ? upiRef : undefined,
         });

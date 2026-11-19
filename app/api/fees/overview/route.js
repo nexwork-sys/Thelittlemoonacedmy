@@ -5,7 +5,7 @@ import ClassFee from "@/models/ClassFee";
 import FeePayment from "@/models/FeePayment";
 import SchoolSettings from "@/models/SchoolSettings";
 import { requireRole } from "@/lib/auth";
-import { feeSummary } from "@/lib/fees";
+import { feeSummary, splitPayments } from "@/lib/fees";
 
 // Fee dashboard: per-student paid / pending + school totals.
 // Admin sees every class; a teacher only sees their own class.
@@ -30,13 +30,15 @@ export const GET = requireRole(["superadmin", "admin", "teacher"], async (req, _
   payments.forEach((p) => (byStudent[p.student] ||= []).push(p));
 
   const rows = students.map((s) => {
-    const tuitionFee = s.monthlyFee || feeOf[s.className] || 0;
+    const monthlyFee = s.monthlyFee || feeOf[s.className] || 0;
     const vanFee = s.vanFee || 0;
-    const monthlyFee = tuitionFee + vanFee; // van fee is billed together with tuition each month
-    const sum = feeSummary({ monthlyFee, payments: byStudent[s._id] || [], startMonth: settings?.sessionStartMonth || 4, admissionDate: s.admissionDate });
+    const { school, van } = splitPayments(byStudent[s._id] || []);
+    const opts = { startMonth: settings?.sessionStartMonth || 4, admissionDate: s.admissionDate };
+    const sum = feeSummary({ monthlyFee, payments: school, ...opts });
+    const vs = feeSummary({ monthlyFee: vanFee, payments: van, ...opts });
     return {
       _id: s._id, studentId: s.studentId, name: s.name, className: s.className, rollNumber: s.rollNumber,
-      guardianMobile: s.guardianMobile, tuitionFee, vanFee, lastReminderAt: s.lastReminderAt, docUnlock: !!s.docUnlock, docRequestAt: s.docRequestAt, ...sum, months: undefined,
+      guardianMobile: s.guardianMobile, vanFee, vanPaid: vs.paid, vanBalance: vs.balance, vanAwaiting: vs.awaiting, vanPendingMonths: vs.pendingMonths, lastReminderAt: s.lastReminderAt, docUnlock: !!s.docUnlock, docRequestAt: s.docRequestAt, ...sum, months: undefined,
     };
   });
   const totals = {

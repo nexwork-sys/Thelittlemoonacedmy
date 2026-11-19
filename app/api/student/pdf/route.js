@@ -9,7 +9,7 @@ import AdmitCard from "@/models/AdmitCard";
 import Exam from "@/models/Exam";
 import SchoolSettings from "@/models/SchoolSettings";
 import { requireRole } from "@/lib/auth";
-import { feeSummary } from "@/lib/fees";
+import { feeSummary, splitPayments } from "@/lib/fees";
 
 export const runtime = "nodejs";
 
@@ -46,7 +46,7 @@ export const GET = requireRole(["student"], async (req, _c, session) => {
     FeePayment.find({ student: s._id }).lean(),
     SchoolSettings.findOne({ key: "school-settings" }).lean(),
   ]);
-  const fees = feeSummary({ monthlyFee: (s.monthlyFee || classFee?.monthlyFee || 0) + (s.vanFee || 0), payments, startMonth: settings?.sessionStartMonth || 4, admissionDate: s.admissionDate });
+  const fees = feeSummary({ monthlyFee: s.monthlyFee || classFee?.monthlyFee || 0, payments: splitPayments(payments).school, startMonth: settings?.sessionStartMonth || 4, admissionDate: s.admissionDate });
   if (fees.balance > 0 && !s.docUnlock) {
     return Response.json({ error: "Fees pending hai. Admin ki approval ke baad download hoga." }, { status: 403 });
   }

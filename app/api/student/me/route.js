@@ -7,7 +7,7 @@ import Exam from "@/models/Exam";
 import AdmitCard from "@/models/AdmitCard";
 import SchoolSettings from "@/models/SchoolSettings";
 import { requireRole } from "@/lib/auth";
-import { feeSummary, currentAcademicYear, allSessionMonths } from "@/lib/fees";
+import { feeSummary, splitPayments, currentAcademicYear, allSessionMonths } from "@/lib/fees";
 
 // Everything the Student ERP needs in one call.
 export const GET = requireRole(["student"], async (_req, _c, session) => {
@@ -23,10 +23,11 @@ export const GET = requireRole(["student"], async (_req, _c, session) => {
     AdmitCard.find({ student: s._id }).sort({ createdAt: -1 }).lean(),
   ]);
   const startMonth = settings?.sessionStartMonth || 4;
-  const tuitionFee = s.monthlyFee || classFee?.monthlyFee || 0;
+  const monthlyFee = s.monthlyFee || classFee?.monthlyFee || 0;
   const vanFee = s.vanFee || 0;
-  const monthlyFee = tuitionFee + vanFee; // tuition + van fee
-  const fees = { ...feeSummary({ monthlyFee, payments, startMonth, admissionDate: s.admissionDate }), tuitionFee, vanFee };
+  const { school: schoolPays, van: vanPays } = splitPayments(payments);
+  const fees = feeSummary({ monthlyFee, payments: schoolPays, startMonth, admissionDate: s.admissionDate });
+  const van = { ...feeSummary({ monthlyFee: vanFee, payments: vanPays, startMonth, admissionDate: s.admissionDate }), payments: vanPays, enabled: vanFee > 0 };
 
   // Attendance % for the current session (present/late = 1, half-day = 0.5, leave ignored)
   const sessionStart = new Date(allSessionMonths(new Date(), startMonth)[0] + "-01T00:00:00");
@@ -77,7 +78,8 @@ export const GET = requireRole(["student"], async (_req, _c, session) => {
       academicYear: s.academicYear || currentAcademicYear(), photoUrl: s.photoUrl,
       lastReminderAt: s.lastReminderAt,
     },
-    fees: { ...fees, payments },
+    fees: { ...fees, payments: schoolPays },
+    van,
     attendance,
     exams: examList,
     school: { name: settings?.schoolName, upiId: settings?.upiId, upiQrUrl: settings?.upiQrUrl, upiLabel: settings?.upiLabel, upiId2: settings?.upiId2, upiLabel2: settings?.upiLabel2, upiQr2Url: settings?.upiQr2Url, phone: settings?.phone },

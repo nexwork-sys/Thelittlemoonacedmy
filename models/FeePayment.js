@@ -10,6 +10,7 @@ const FeePaymentSchema = new mongoose.Schema(
     studentName: String,
     className: String,
     rollNumber: Number,
+    feeType: { type: String, enum: ["school", "van"], default: "school" }, // van = school-van fee (separate receipt/approval)
     months: [{ type: String }], // "2026-04" ...
     amount: { type: Number, required: true, min: 1 },
     mode: { type: String, enum: ["cash", "upi"], required: true },
