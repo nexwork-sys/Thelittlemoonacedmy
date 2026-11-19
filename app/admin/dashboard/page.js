@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -13,6 +11,7 @@ const MODULES = [
   { href: "/admin/fees", title: "Fees", desc: "Kitni fees jama hui, kiski pending hai, payment approvals aur reminders." },
   { href: "/admin/admit-cards", title: "Admit Cards", desc: "Students chunkar admit card generate karein; unke ERP me download hoga." },
   { href: "/admin/exams", title: "Exams & Results", desc: "Exam time table, marks entry aur result publish karna." },
+  { href: "/admin/salary", title: "Teacher Salary", desc: "Teacher, month aur amount chunkar salary paid mark karein; teacher ko slip mil jayegi." },
   { href: "/admin/staff", title: "Teachers", desc: "Teacher add karein: PIN, class teacher, face recognition." },
   { href: "/admin/students", title: "Students & Attendance", desc: "Class-wise student list, Student ID aur daily attendance." },
   { href: "/admin/teacher-attendance", title: "Teacher Attendance & Logs", desc: "Daily check-in/check-out logs, monthly Excel export." },

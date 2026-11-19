@@ -240,25 +240,19 @@ function Fees({ s, fees, school, data, reload, setDoc }) {
 
             {mode === "upi" ? (
               <div className="rounded-xl border border-dashed border-brass bg-brass-50 p-4 text-center">
-                {(() => {
-                  const qrs = [
-                    { url: school.upiQrUrl, id: school.upiId, label: school.upiLabel || "QR 1" },
-                    { url: school.upiQr2Url, id: school.upiId2, label: school.upiLabel2 || "QR 2" },
-                  ].filter((q) => q.url);
-                  if (!qrs.length) return <p className="text-sm text-navy-400">School ka QR abhi set nahi hai. Admin se contact karein.</p>;
-                  return (
-                    <div className="flex flex-wrap items-start justify-center gap-4">
-                      {qrs.map((q, i) => (
-                        <div key={i}>
-                          {qrs.length > 1 && <p className="mb-1 text-xs font-bold text-navy-600">{q.label}</p>}
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={q.url} alt={`School UPI QR ${i + 1}`} className="mx-auto h-48 w-48 rounded-lg bg-white object-contain p-2" />
-                          {q.id && <p className="mt-1 text-sm">UPI ID: <b>{q.id}</b></p>}
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })()}
+                {school.upiQrUrl || school.upiQr2Url ? (
+                  <div className="flex flex-wrap items-start justify-center gap-6">
+                    {[[school.upiQrUrl, school.upiLabel || "QR 1", school.upiId], [school.upiQr2Url, school.upiLabel2 || "QR 2", school.upiId2]]
+                      .filter(([u]) => u).map(([u, l, id]) => (
+                      <div key={l} className="text-center">
+                        <p className="mb-1 text-sm font-semibold text-navy">{l}</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={u} alt={l} className="mx-auto h-56 w-56 rounded-lg bg-white object-contain p-2" />
+                        {id && <p className="mt-1 text-sm">UPI ID: <b>{id}</b></p>}
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-sm text-navy-400">School ka QR abhi set nahi hai. Admin se contact karein.</p>}
                 <p className="mt-1 text-xs text-navy-600">Scan karke <b>{inr(amount)}</b> pay karein, phir neeche Submit karein.</p>
                 <input placeholder="UPI Transaction / UTR no. (optional)" value={upiRef} onChange={(e) => setUpiRef(e.target.value)}
                   className="mx-auto mt-3 block w-full max-w-xs rounded-lg border border-navy-100 bg-white px-3 py-2 text-sm" />

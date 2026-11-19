@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import AdmissionInquiryModal from "./AdmissionInquiryModal";
-import { SOCIAL, CREDIT } from "../lib/siteConfig";
+import { SOCIAL, CREDIT } from "@/lib/siteConfig";
 
 function Instagram() {
   return (

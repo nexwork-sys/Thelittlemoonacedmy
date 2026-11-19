@@ -26,12 +26,12 @@ const SchoolSettingsSchema = new mongoose.Schema(
     upiId: { type: String },
     upiQrUrl: { type: String }, // QR image students see when paying by UPI
     upiQrPublicId: { type: String },
-    upiLabel: { type: String }, // optional name for QR 1 (e.g. "PhonePe")
-    // Second payment QR (optional)
+    upiLabel: { type: String }, // name shown above QR 1, e.g. "PhonePe"
+    // Optional second QR (another account / app)
     upiId2: { type: String },
+    upiLabel2: { type: String },
     upiQr2Url: { type: String },
     upiQr2PublicId: { type: String },
-    upiLabel2: { type: String },
     sessionStartMonth: { type: Number, default: 4 }, // April
     logoUrl: { type: String },
     logoPublicId: { type: String },

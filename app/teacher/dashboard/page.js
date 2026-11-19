@@ -9,6 +9,7 @@ export const metadata = { title: "Teacher Dashboard — The Little Moon Academy"
 const MODULES = [
   { href: "/teacher/punch", title: "Punch In / Out", desc: "Face + location verified daily attendance, school ke andar se." },
   { href: "/teacher/attendance", title: "Mark Attendance", desc: "Apni class ki daily student attendance." },
+  { href: "/teacher/salary", title: "My Salary", desc: "Paid salary dekhein aur salary slip download karein." },
 ];
 
 // Shown only to teachers who are designated as a Class Teacher (CT).
